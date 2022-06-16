@@ -1,0 +1,1 @@
+# promedik-bb-block-plugin
