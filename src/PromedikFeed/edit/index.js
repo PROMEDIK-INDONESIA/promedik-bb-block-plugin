@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { GET_ACTIVITY_FEED } from '../../statics/API'
+import { DateConverter, PromedikGreyBorderFeedContent, PromedikGreyNewPostBG } from '../../statics'
 import {
   InspectorControls,
   useBlockProps
@@ -48,12 +49,16 @@ export const PromedikFeedEdit = ({ props }) => {
       const ActDataFiltered = []
       if (ActivityData.data) {
         ActivityData.data.map((data, idx) => {
+          const convertedDate = DateConverter(data.date)
           ActDataFiltered.push({
             avatar: data.user_avatar.thumb,
             title: data.title,
             actFeed: data.content.rendered,
             link: data.link,
-            component: data.component
+            component: data.component,
+            type: data.type,
+            featureMedia: data.feature_media,
+            date: convertedDate
           })
         })
         setActivityFeed(ActDataFiltered)
@@ -125,7 +130,7 @@ export const PromedikFeedEdit = ({ props }) => {
   }
 
   const RenderSelectedActivityFeedDataType = () => {
-    
+
   }
 
   const RenderCardActivityFeed = (ActData) => {
@@ -139,13 +144,14 @@ export const PromedikFeedEdit = ({ props }) => {
             key={idx}
             style={{
               borderWidth: 1,
-              borderColor: '#45959B',
+              borderColor: PromedikGreyBorderFeedContent,
               // minWidth: '200px',
-              minHeight: '220px',
-              maxHeight: '220px',
+              // minHeight: '220px',
+              maxHeight: '500px',
               overflow: 'hidden',
               margin: '10px',
-              padding: '10px',
+              padding: '15px 15px 0px 15px',
+              paddingBottom: data.type === 'new_blog_post' ? '20px' : '0px',
               borderRadius: 10,
               flex: 1,
               display: 'flex',
@@ -153,7 +159,7 @@ export const PromedikFeedEdit = ({ props }) => {
               textOverflow: 'ellipsis'
             }}
           >
-            <div style={{ display: 'flex', flex: 1, alignItems: 'center', margin: '10px 0px 10px 0px' }}>
+            <div style={{ display: 'flex', flex: 1, alignItems: 'flex-start', margin: '0px 0px 10px 0px' }}>
               {!IsAvatarHide &&
                 <div style={{ maxWidth: '35px', maxHeight: '35px', borderRadius: '20px', overflow: 'hidden' }}>
                   <img
@@ -161,57 +167,111 @@ export const PromedikFeedEdit = ({ props }) => {
                   />
                 </div>
               }
-              {data.type === 'groups' || data.type === 'bbpress' ?
-                <div
-                  style={{
-                    fontSize: '11px', paddingLeft: !IsAvatarHide && '10px'
-                  }}
-                  dangerouslySetInnerHTML={HTMLdataTitle}
-                />
-                :
-                <div
-                  style={{
-                    fontSize: '12px', paddingLeft: !IsAvatarHide && '10px'
-                  }}
-                  dangerouslySetInnerHTML={HTMLdataTitle}
-                />
-              }
-            </div>
-            <div
-              style={{
-                flex: 75,
-                display: 'flex',
-                maxHeight: '130px',
-                overflow: 'hidden'
-              }}
-            >
               <div
-                dangerouslySetInnerHTML={HTMLdataActFeed}
                 style={{
-                  fontSize: '13px'
-                }}
-              />
-            </div>
-            <div
-              style={{
-                flex: 1,
-                display: 'flex'
-              }}
-            >
-              <a
-                href={data.link}
-                style={{
-                  height: '35px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  fontSize: '13px',
-                  color: 'orange',
-                  textDecoration: 'none'
+                  fontSize: '14px',
+                  paddingLeft: !IsAvatarHide && '10px'
                 }}
               >
-                Read More
-              </a>
+                {data.type === 'groups' || data.type === 'bbpress' ?
+                  <div
+                    // style={{
+                    //   fontSize: '14px', paddingLeft: !IsAvatarHide && '10px'
+                    // }}
+                    dangerouslySetInnerHTML={HTMLdataTitle}
+                  />
+                  :
+                  <div
+                    // style={{
+                    //   fontSize: '12px', paddingLeft: !IsAvatarHide && '10px'
+                    // }}
+                    dangerouslySetInnerHTML={HTMLdataTitle}
+                  />
+                }
+                <div>{data.date}</div>
+              </div>
             </div>
+            {data.type === 'new_blog_post' ?
+              <div
+                style={{
+                  // flex: 75,
+                  // display: 'flex',
+                  // maxHeight: '200px',
+                  // minHeight: '500px',
+                  overflow: 'hidden',
+                  borderWidth: '1px',
+                  borderColor: PromedikGreyBorderFeedContent,
+                  borderRadius: '6px'
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    maxHeight: '200px',
+                    overflow: 'hidden'
+                  }}
+                >
+                  <img
+                    src={data.featureMedia}
+                    style={{ flex: 1 }}
+                  />
+                </div>
+                <div style={{ padding: '10px', backgroundColor: PromedikGreyNewPostBG }}>
+                  <div
+                    dangerouslySetInnerHTML={HTMLdataActFeed}
+                    style={{
+                      fontSize: '13px'
+                    }}
+                  />
+                </div>
+              </div>
+              :
+              <div
+                style={{
+                  flex: 75,
+                  display: 'flex',
+                  // maxHeight: '200px',
+                  overflow: 'hidden',
+                  borderWidth: '1px',
+                  borderColor: PromedikGreyBorderFeedContent,
+                  borderRadius: '6px',
+                  padding: '10px'
+                }}
+              >
+                <div
+                  dangerouslySetInnerHTML={HTMLdataActFeed}
+                  style={{
+                    fontSize: '13px'
+                  }}
+                />
+              </div>
+            }
+            {data.type === 'new_blog_post' ?
+              <div></div>
+              :
+              <div
+                style={{
+                  flex: 1,
+                  display: 'flex'
+                }}
+              >
+                <a
+                  href={data.link}
+                  style={{
+                    height: '35px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    fontSize: '13px',
+                    color: 'orange',
+                    textDecoration: 'none'
+                  }}
+                >
+                  Read More
+                </a>
+              </div>
+            }
           </div>
           // {[document.body.firstChild]}
         )

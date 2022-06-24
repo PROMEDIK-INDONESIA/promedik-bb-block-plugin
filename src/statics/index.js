@@ -1,4 +1,4 @@
-// import { useMediaQuery } from 'react-responsive'
+import moment from "moment"
 
 export const PromedikGrey = '#DCDCDC'
 export const PromedikGreyActFeedBox = '#FBFBFC'
@@ -6,6 +6,8 @@ export const PromedikLightGrey = '#f5f5f5'
 export const PromedikDarkGrey = '#808080'
 export const PromedikGreyBackgroundScreen = '#fafafa'
 export const PromedikGreyIconBottomTab = '#A5A5A5'
+export const PromedikGreyBorderFeedContent = '#d6d9dd'
+export const PromedikGreyNewPostBG = '#f2f4f5'
 
 export const PromedikStatusBlue = '#385DFF'
 export const PromedikStatusGreen = '#14B550'
@@ -33,8 +35,8 @@ export const PromedikErrorRedText = '#FF8484'
 export const PromedikErrorRed = '#ffbaba'
 export const PromedikErrorRedBG = '#FFEEEE'
 
-// export const isDesktopOrLaptop = useMediaQuery({
-//   query: '(min-width: 1224px)'
-// })
-// export const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' })
-// export const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+export const DateConverter = (date) => {
+  const ReformatDate = moment(date).format("YYYY-MM-DD[T]HH:mm:ss")
+  const LastActiveDiscussion = moment(ReformatDate).fromNow()
+  return LastActiveDiscussion
+}

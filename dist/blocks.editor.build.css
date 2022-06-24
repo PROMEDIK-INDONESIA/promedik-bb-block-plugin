@@ -90,7 +90,10 @@
   .discussion-detail-date-member-replies {
     display: block !important; }
   .discussion-detail-member-replies {
-    margin-left: 0px !important; } }
+    margin-left: 0px !important; }
+  .wp-block-column {
+    -ms-flex-preferred-size: 50% !important;
+        flex-basis: 50% !important; } }
 
 .discussion-title-content-container {
   padding-left: 20px; }

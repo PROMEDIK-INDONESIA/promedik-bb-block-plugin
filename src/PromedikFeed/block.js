@@ -38,11 +38,13 @@ registerBlockType('promedik/promedik-feed', {
 	],
 	attributes: {
 		avatar: { type: "string" },
+		date: { type: "string" },
 		title: { type: "string" },
 		actFeed: { type: "string" },
 		link: { type: "string" },
 		component: { type: "string" },
 		type: { type: "string" },
+		featureMedia: { type: "string" },
 		data: { type: "array" },
 		isHideAvatar: { type: "boolean" }
 	},
