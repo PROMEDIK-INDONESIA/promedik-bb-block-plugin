@@ -37,6 +37,7 @@ export const PromedikFeedSave = ({ props }) => {
                 </div>
               }
               <div
+                className="feed-header-card-container"
                 style={{
                   fontSize: '14px',
                   color: '#5a5a5a',
@@ -45,6 +46,7 @@ export const PromedikFeedSave = ({ props }) => {
               >
                 {data.type === 'groups' || data.type === 'bbpress' ?
                   <div
+                    className="feed-header-action-card"
                     // style={{
                     //   fontSize: '14px', paddingLeft: !isHideAvatar && '10px'
                     // }}
@@ -52,13 +54,14 @@ export const PromedikFeedSave = ({ props }) => {
                   />
                   :
                   <div
+                    className="feed-header-action-card"
                     // style={{
                     //   fontSize: '12px', paddingLeft: !isHideAvatar && '10px'
                     // }}
                     dangerouslySetInnerHTML={HTMLdataTitle}
                   />
                 }
-                <div>{data.date}</div>
+                <div className="feed-header-date">{data.date}</div>
               </div>
             </div>
             {data.type === 'new_blog_post' ?
@@ -90,6 +93,7 @@ export const PromedikFeedSave = ({ props }) => {
                 </div>
                 <div style={{ padding: '10px', backgroundColor: PromedikGreyNewPostBG }}>
                   <div
+                    className="feed-content-new-post"
                     dangerouslySetInnerHTML={HTMLdataActFeed}
                     style={{
                       fontSize: '13px'
@@ -110,6 +114,7 @@ export const PromedikFeedSave = ({ props }) => {
                 }}
               >
                 <div
+                  className="feed-content-action-title"
                   dangerouslySetInnerHTML={HTMLdataActFeed}
                   style={{
                     fontSize: '13px'
