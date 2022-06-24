@@ -1,0 +1,20 @@
+{
+  "name": "promedik-plugin-cgb-guten-block",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cgb-scripts start",
+    "build": "cgb-scripts build",
+    "eject": "cgb-scripts eject"
+  },
+  "dependencies": {
+    "@wordpress/block-editor": "^9.3.0",
+    "@wordpress/components": "^19.13.0",
+    "@wordpress/viewport": "^4.9.0",
+    "axios": "^0.27.2",
+    "cgb-scripts": "1.23.1",
+    "moment": "^2.29.3",
+    "node-html-parser": "^5.3.3",
+    "react": "^18.2.0"
+  }
+}
