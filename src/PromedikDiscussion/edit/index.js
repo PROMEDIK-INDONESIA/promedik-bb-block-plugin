@@ -71,6 +71,7 @@ export const PromedikDiscussionEdit = ({ props }) => {
       default:
         break;
     }
+    
     const UpdateArrayData = renderForumCategoryContent.concat(checkedData.checked)
     if (renderForumCategoryContent.length > 0) {
       if (renderForumCategoryContent.includes(checkedData.checked)) {
