@@ -91,6 +91,14 @@ export const PromedikDiscussionEdit = ({ props }) => {
   const GetDataDiscuss = async () => {
     try {
       const DiscussionData = await axios.get(GET_DISCUSSION) // array
+      const ForumsData = await axios.get(GET_FORUMS) // array
+      const CategoryForumTitle = []
+      if (ForumsData.data) {
+        ForumsData.data.map((data, idx) => {
+          CategoryForumTitle.push(data.title.rendered)
+        })
+      }
+      
       return DiscussionData.data
     } catch (error) {
       console.log(error, '<<< get discussion forum content');
@@ -172,6 +180,10 @@ export const PromedikDiscussionEdit = ({ props }) => {
         </InspectorControls>
       </div>
     );
+  }
+
+  const RenderPlaceholder = () => {
+
   }
 
   const RenderCardDiscussion = (discussionData) => {
