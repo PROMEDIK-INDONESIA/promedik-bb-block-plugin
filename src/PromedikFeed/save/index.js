@@ -18,7 +18,7 @@ export const PromedikFeedSave = ({ props }) => {
               // minHeight: '220px',
               maxHeight: '500px',
               overflow: 'hidden',
-              margin: '10px',
+              margin: '0px 10px 10px 10px',
               padding: '15px 15px 0px 15px',
               paddingBottom: data.type === 'new_blog_post' ? '20px' : '0px',
               borderRadius: 10,

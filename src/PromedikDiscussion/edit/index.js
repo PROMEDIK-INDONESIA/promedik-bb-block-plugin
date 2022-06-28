@@ -8,15 +8,12 @@ import {
 } from '@wordpress/block-editor';
 import { Panel, PanelBody, CheckboxControl, SelectControl } from '@wordpress/components';
 import moment from 'moment'
-// import { select } from '@wordpress/data';
-// import { store } from '@wordpress/viewport';
 
 export const PromedikDiscussionEdit = ({ props }) => {
-  // const isSmall = select(store).isViewportMatch('< medium');
-
-  // console.log(isSmall, '<< isSmall');
-  // console.log(props, '<<< attributes edit');
   const [discussion, setDiscussion] = useState([])
+  const [forumCategory, setForumCategory] = useState([])
+  const [isColumn, setIsColumn] = useState(props.attributes.isColumn !== undefined ? props.attributes.isColumn : false)
+  const [isForumCategoryHide, setIsForumCategoryHide] = useState(props.attributes.isForumCategoryHide !== undefined ? props.attributes.isForumCategoryHide : false)
 
   const [renderForumCategoryContent, setForumCategoryContent] = useState(props.attributes.arrayForumCategory ? props.attributes.arrayForumCategory : ['Fertilitas', 'Dermatologi', 'Lifestyle'])
 
@@ -27,29 +24,36 @@ export const PromedikDiscussionEdit = ({ props }) => {
   const [IsAvatarHide, setIsAvatarHide] = useState(props.attributes.isHideAvatar !== undefined ? props.attributes.isHideAvatar : false);
 
   useEffect(() => {
+
     // const { attributes: {
     //   isFertilitasHidden,
     //   isDermatologiHidden,
     //   isLifestyleHidden
     // } } = props
-    // let FilterTemp = []
+    let FilterTemp = []
 
-    // if(isFertilitasHidden){
-    //   FilterTemp.push('Fertilitas')
-    // }
-    // if(isDermatologiHidden){
-    //   FilterTemp.push('Dermatologi')
-    // }
-    // if(isLifestyleHidden){
-    //   FilterTemp.push('Lifestyle')
-    // }
+    if (props.attributes.isFertilitasHidden) {
+      FilterTemp.push('Fertilitas')
+    }
+    if (props.attributes.isDermatologiHidden) {
+      FilterTemp.push('Dermatologi')
+    }
+    if (props.attributes.isLifestyleHidden) {
+      FilterTemp.push('Lifestyle')
+    }
 
     props.setAttributes({ isHideAvatar: IsAvatarHide })
+    props.setAttributes({ isColumn: isColumn })
+    props.setAttributes({ isForumCategoryHide: isForumCategoryHide })
     props.setAttributes({ isFertilitasHidden: isFertilitasHidden })
     props.setAttributes({ isLifestyleHidden: isLifestyleHidden })
     props.setAttributes({ isDermatologiHidden: isDermatologiHidden })
     props.setAttributes({ arrayForumCategory: renderForumCategoryContent })
     GetDataDiscuss().then(value => GetDiscussionFullDetail(value))
+
+    if (props.attributes.isFertilitasHidden || props.attributes.isDermatologiHidden || props.attributes.isLifestyleHidden) {
+      setForumCategoryContent(FilterTemp)
+    }
   }, [])
 
   useEffect(() => {
@@ -71,7 +75,7 @@ export const PromedikDiscussionEdit = ({ props }) => {
       default:
         break;
     }
-    
+
     const UpdateArrayData = renderForumCategoryContent.concat(checkedData.checked)
     if (renderForumCategoryContent.length > 0) {
       if (renderForumCategoryContent.includes(checkedData.checked)) {
@@ -98,7 +102,7 @@ export const PromedikDiscussionEdit = ({ props }) => {
           CategoryForumTitle.push(data.title.rendered)
         })
       }
-      
+      setForumCategory(CategoryForumTitle)
       return DiscussionData.data
     } catch (error) {
       console.log(error, '<<< get discussion forum content');
@@ -135,6 +139,22 @@ export const PromedikDiscussionEdit = ({ props }) => {
         <InspectorControls>
           <Panel header="Discussion Setting">
             <PanelBody title="Show Forum Discussion Category">
+              {/* {forumCategory.map((data, idx) => {
+                return (
+                  <CheckboxControl
+                    label={data}
+                    checked={forumCategory.includes(data) ? true : false}
+                    onChange={(e) => {
+                      if (forumCategory.includes(data)) {
+                        setForumCategory([...forumCategory, data])
+                      } else {
+                        const filtered = forumCategory.filter(value => value !== data)
+                        setForumCategory(filtered)
+                      }
+                    }}
+                  />
+                )
+              })} */}
               <CheckboxControl
                 label="Fertilitas"
                 checked={isFertilitasHidden}
@@ -176,14 +196,233 @@ export const PromedikDiscussionEdit = ({ props }) => {
                 }}
               />
             </PanelBody>
+            <PanelBody title="Discussion Column">
+              <CheckboxControl
+                label="Show Discussion in Column"
+                checked={isColumn}
+                onChange={(e) => {
+                  setIsColumn(e)
+                  props.setAttributes({ isColumn: e })
+                }}
+              />
+            </PanelBody>
+            <PanelBody title="Forum Category">
+              {renderForumCategoryContent.length < 2 &&
+                <CheckboxControl
+                  label="Hide Forum Category"
+                  checked={isForumCategoryHide}
+                  onChange={(e) => {
+                    console.log(e, '<<< checkbox')
+                    setIsForumCategoryHide(e)
+                    props.setAttributes({ isForumCategoryHide: e })
+                  }}
+                />
+              }
+            </PanelBody>
           </Panel>
         </InspectorControls>
       </div>
     );
   }
 
-  const RenderPlaceholder = () => {
+  const HandleHideForumCategory = (category) => {
+    if (!isForumCategoryHide) {
+      return (
+        <div
+          className="discussion-detail-forum-category-container"
+          style={{
+            display: 'flex',
+            flex: 2,
+            alignItems: 'center',
+            justifyContent: isColumn ? 'flex-start' : 'flex-end',
+            paddingLeft: isColumn ? '0px' : '0px'
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: category === 'Lifestyle' ? PromedikForumCategoryLifestyle : category === 'Dermatologi' ? PromedikForumCategoryDermatologi : PromedikForumCategoryFertilitas,
+              // width: '100px',
+              // height: '50px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '14px',
+              padding: '5px 10px',
+              borderRadius: '10px',
+              color: PromedikWhite
+            }}
+          >
+            {category}
+          </div>
+        </div>
+      )
+    }
+    // if (renderForumCategoryContent.length > 1) {
+    // return (
+    //   <div
+    //     className="discussion-detail-forum-category-container"
+    //     style={{
+    //       display: 'flex',
+    //       flex: 2,
+    //       alignItems: 'center',
+    //       justifyContent: isColumn ? 'flex-start' : 'flex-end',
+    //       paddingLeft: isColumn ? '0px' : '0px'
+    //     }}
+    //   >
+    //     <div
+    //       style={{
+    //         backgroundColor: category === 'Lifestyle' ? PromedikForumCategoryLifestyle : category === 'Dermatologi' ? PromedikForumCategoryDermatologi : PromedikForumCategoryFertilitas,
+    //         // width: '100px',
+    //         // height: '50px',
+    //         display: 'flex',
+    //         alignItems: 'center',
+    //         justifyContent: 'center',
+    //         fontSize: '14px',
+    //         padding: '5px 10px',
+    //         borderRadius: '10px',
+    //         color: PromedikWhite
+    //       }}
+    //     >
+    //       {category}
+    //     </div>
+    //   </div>
+    // )
+    // } else if (!isForumCategoryHide) {
+    //   return (
+    //     <div
+    //       className="discussion-detail-forum-category-container"
+    //       style={{
+    //         display: 'flex',
+    //         flex: 2,
+    //         alignItems: 'center',
+    //         justifyContent: isColumn ? 'flex-start' : 'flex-end',
+    //         paddingLeft: isColumn ? '0px' : '0px'
+    //       }}
+    //     >
+    //       <div
+    //         style={{
+    //           backgroundColor: category === 'Lifestyle' ? PromedikForumCategoryLifestyle : category === 'Dermatologi' ? PromedikForumCategoryDermatologi : PromedikForumCategoryFertilitas,
+    //           // width: '100px',
+    //           // height: '50px',
+    //           display: 'flex',
+    //           alignItems: 'center',
+    //           justifyContent: 'center',
+    //           fontSize: '14px',
+    //           padding: '5px 10px',
+    //           borderRadius: '10px',
+    //           color: PromedikWhite
+    //         }}
+    //       >
+    //         {category}
+    //       </div>
+    //     </div>
+    //   )
+    // } else {
+    //   return <div></div>
+    // }
+  }
 
+  const RenderPlaceholder = (forumCategory) => {
+    if (forumCategory.length > 0) {
+      return forumCategory.map((data, idx) => {
+        if (renderForumCategoryContent.includes(data)) {
+          return (
+            <div key={idx} style={{ display: 'flex', flex: 1, padding: '20px', margin: '10px 0px 10px 0px' }}>
+              {!IsAvatarHide &&
+                <div
+                  style={{
+                    display: 'flex',
+                    marginRight: '10px'
+                  }}
+                >
+                  {/* <img
+                  src={data.userAvatar}
+                  style={{
+                  width: '50px',
+                  height: '50px',
+                  borderRadius: '50px'
+                  }}
+                  /> */}
+                  <div
+                    style={{
+                      width: '50px',
+                      height: '50px',
+                      borderRadius: '50px',
+                      backgroundColor: PromedikLightGrey,
+                      color: PromedikDarkGrey,
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    A
+                  </div>
+                </div>
+              }
+              <div
+                className="discussion-title-category-container"
+                style={{
+                  display: isColumn ? '' : 'flex',
+                  flex: 5
+                }}
+              >
+                <div className="discussion-title-content-container" style={{ display: 'flex', flex: 5, flexDirection: 'column' }}>
+                  <div style={{ fontSize: '16px' }}>Judul Forum Kesehatan Promedik</div>
+                  <div
+                    className="discussion-detail-date-member-replies"
+                    style={{
+                      display: isColumn ? '' : 'flex',
+                      color: PromedikDarkGrey,
+                      fontSize: '14px',
+                      marginTop: isColumn ? '10px' : '0px', marginBottom: isColumn ? '10px' : '0px'
+                    }}
+                  >
+                    <div>Dibalas 3 Hari yang lalu</div>
+                    <div className="discussion-detail-member-replies" style={{ display: 'flex', marginLeft: isColumn ? '0px' : '15px' }}>
+                      <div>2 Pengguna</div>
+                      <div style={{ marginLeft: '5px', marginRight: '5px' }}>|</div>
+                      <div>5 Balasan</div>
+                    </div>
+                  </div>
+                </div>
+                {HandleHideForumCategory(data)}
+                {/* {!isForumCategoryHide ?
+                  < div
+                    className="discussion-detail-forum-category-container"
+                    style={{
+                      display: 'flex',
+                      flex: 2,
+                      alignItems: 'center',
+                      justifyContent: isColumn ? 'flex-start' : 'flex-end',
+                      paddingLeft: isColumn ? '0px' : '0px'
+                    }}
+                  >
+                    <div
+                      style={{
+                        backgroundColor: data === 'Lifestyle' ? PromedikForumCategoryLifestyle : data === 'Dermatologi' ? PromedikForumCategoryDermatologi : PromedikForumCategoryFertilitas,
+                        // width: '100px',
+                        // height: '50px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '14px',
+                        padding: '5px 10px',
+                        borderRadius: '10px',
+                        color: PromedikWhite
+                      }}
+                    >
+                      {data}
+                    </div>
+                  </div>
+                  :
+                  <div></div>
+                } */}
+              </div>
+            </div >
+          )
+        }
+      })
+    }
   }
 
   const RenderCardDiscussion = (discussionData) => {
@@ -204,19 +443,41 @@ export const PromedikDiscussionEdit = ({ props }) => {
                   />
                 </div>
               }
-              <div className="discussion-title-category-container" style={{ display: 'flex', flex: 5 }}>
+              <div
+                className="discussion-title-category-container"
+                style={{
+                  display: isColumn ? '' : 'flex',
+                  flex: 5
+                }}
+              >
                 <div className="discussion-title-content-container" style={{ display: 'flex', flex: 5, flexDirection: 'column' }}>
                   <div style={{ fontSize: '16px' }}>{data.title}</div>
-                  <div className="discussion-detail-date-member-replies" style={{ display: 'flex', color: PromedikDarkGrey, fontSize: '14px' }}>
+                  <div
+                    className="discussion-detail-date-member-replies"
+                    style={{
+                      display: isColumn ? '' : 'flex',
+                      color: PromedikDarkGrey,
+                      fontSize: '14px'
+                    }}
+                  >
                     <div>{`replied ${data.lastActiveTime}`}</div>
-                    <div className="discussion-detail-member-replies" style={{ display: 'flex', marginLeft: '15px' }}>
+                    <div className="discussion-detail-member-replies" style={{ display: 'flex', marginLeft: isColumn ? '0px' : '15px' }}>
                       <div>{data.lastActiveTime > 1 ? `${data.totalPersondata} Members` : `${data.totalPersondata} Member`}</div>
                       <div style={{ marginLeft: '5px', marginRight: '5px' }}>|</div>
                       <div>{`${data.totalReply} Replies`}</div>
                     </div>
                   </div>
                 </div>
-                <div className="discussion-detail-forum-category-container" style={{ display: 'flex', flex: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
+                <div
+                  className="discussion-detail-forum-category-container"
+                  style={{
+                    display: 'flex',
+                    flex: 2,
+                    alignItems: 'center',
+                    justifyContent: isColumn ? 'flex-start' : 'flex-end',
+                    paddingLeft: isColumn ? '0px' : '0px'
+                  }}
+                >
                   <div
                     style={{
                       backgroundColor: data.forumCategory === 'Lifestyle' ? PromedikForumCategoryLifestyle : data.forumCategory === 'Dermatologi' ? PromedikForumCategoryDermatologi : PromedikForumCategoryFertilitas,
@@ -242,18 +503,6 @@ export const PromedikDiscussionEdit = ({ props }) => {
     }
   }
 
-  //   PromedikForumCategoryFertilitas
-  // PromedikForumCategoryLifestyle
-  // PromedikForumCategoryDermatologi
-
-  // lastActiveTime: LastActiveDiscussion,
-  // date: data.last_active_time,
-  // title: data.title.raw,
-  // totalPersondata: data.voice_count,
-  // totalReply: data.total_reply_count,
-  // userAvatar: UserAvatar.data.thumb,
-  // link: data.link
-
   return (
     <div
       style={{
@@ -265,15 +514,17 @@ export const PromedikDiscussionEdit = ({ props }) => {
       }}
     >
       <div style={{ padding: '15px', borderBottom: `1px ${PromedikDarkGrey} solid` }}>
-        All Discussions HAHAHAHHAHAHAH
-        <div>{renderForumCategoryContent}</div>
+        All Discussions
+        {/* <div>{renderForumCategoryContent}</div> */}
+        <div>{forumCategory}</div>
       </div>
       {BlockSetting()}
       {/* <div style={{ display: 'flex', flex: 1 }}>
         {forum ? RenderCardForum(forum) : <p>loading...</p>}
       </div> */}
       <div>
-        {discussion ? RenderCardDiscussion(discussion) : <p>loading...</p>}
+        {/* {discussion ? RenderCardDiscussion(discussion) : <p>loading...</p>} */}
+        {RenderPlaceholder(forumCategory)}
       </div>
     </div>
   )
