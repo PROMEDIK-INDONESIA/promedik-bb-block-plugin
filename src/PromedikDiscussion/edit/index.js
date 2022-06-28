@@ -341,7 +341,7 @@ export const PromedikDiscussionEdit = ({ props }) => {
                 }}
               >
                 <div className="discussion-title-content-container" style={{ display: 'flex', flex: 5, flexDirection: 'column' }}>
-                  <div style={{ fontSize: '16px' }}>Nama Topik Diskusi</div>
+                  <div style={{ fontSize: '16px' }}>Judul Forum Kesehatan Promedik</div>
                   <div
                     className="discussion-detail-date-member-replies"
                     style={{

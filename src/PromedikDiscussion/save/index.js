@@ -36,7 +36,7 @@ export const PromedikDiscussionSave = ({ props }) => {
           return (
             <div key={idx} style={{ display: 'flex', flex: 1, padding: '20px', margin: '10px 0px 10px 0px' }}>
               {!isHideAvatar &&
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', marginRight: '10px' }}>
                   <img
                     src={data.userAvatar}
                     style={{
