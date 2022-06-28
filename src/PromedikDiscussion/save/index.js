@@ -3,15 +3,17 @@ import { PromedikDarkGrey, PromedikForumCategoryDermatologi, PromedikForumCatego
 // import './style.scss'
 
 export const PromedikDiscussionSave = ({ props }) => {
-  // console.log(props, '<<< props');
   // console.log(isTabletOrMobile, '<<< isTabletOrMobile');
   const { attributes: {
     data,
     isHideAvatar,
     isFertilitasHidden,
     isLifestyleHidden,
-    isDermatologiHidden
+    isDermatologiHidden,
+    isColumn,
+    isForumCategoryHide
   } } = props
+  // console.log(isForumCategoryHide, '<<< props');
 
   const FilterData = [
     { Fertilitas: isFertilitasHidden },
@@ -74,36 +76,61 @@ export const PromedikDiscussionSave = ({ props }) => {
                   {data.forumCategory}
                 </div>
               </div> */}
-              <div className="discussion-title-category-container" style={{ display: 'flex', flex: 5 }}>
+              <div
+                className="discussion-title-category-container"
+                style={{
+                  display: isColumn ? '' : 'flex',
+                  flex: 5
+                }}
+              >
                 <div className="discussion-title-content-container" style={{ display: 'flex', flex: 5, flexDirection: 'column' }}>
                   <div style={{ fontSize: '16px' }}>{data.title}</div>
-                  <div className="discussion-detail-date-member-replies" style={{ display: 'flex', color: PromedikDarkGrey, fontSize: '14px' }}>
+                  <div
+                    className="discussion-detail-date-member-replies"
+                    style={{
+                      display: isColumn ? '' : 'flex',
+                      color: PromedikDarkGrey,
+                      fontSize: '14px',
+                      marginTop: isColumn ? '10px' : '0px', marginBottom: isColumn ? '10px' : '0px'
+                    }}
+                  >
                     <div>{`replied ${data.lastActiveTime}`}</div>
-                    <div className="discussion-detail-member-replies" style={{ display: 'flex', marginLeft: '15px' }}>
+                    <div className="discussion-detail-member-replies" style={{ display: 'flex', marginLeft: isColumn ? '0px' : '15px' }}>
                       <div>{data.lastActiveTime > 1 ? `${data.totalPersondata} Members` : `${data.totalPersondata} Member`}</div>
                       <div style={{ marginLeft: '5px', marginRight: '5px' }}>|</div>
                       <div>{`${data.totalReply} Replies`}</div>
                     </div>
                   </div>
                 </div>
-                <div className="discussion-detail-forum-category-container" style={{ display: 'flex', flex: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
+                {!isForumCategoryHide &&
                   <div
+                    className="discussion-detail-forum-category-container"
                     style={{
-                      backgroundColor: data.forumCategory === 'Lifestyle' ? PromedikForumCategoryLifestyle : data.forumCategory === 'Dermatologi' ? PromedikForumCategoryDermatologi : PromedikForumCategoryFertilitas,
-                      // width: '100px',
-                      // height: '50px',
                       display: 'flex',
+                      flex: 2,
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '14px',
-                      padding: '5px 10px',
-                      borderRadius: '10px',
-                      color: PromedikWhite
+                      justifyContent: isColumn ? 'flex-start' : 'flex-end',
+                      paddingLeft: isColumn ? '0px' : '0px'
                     }}
                   >
-                    {data.forumCategory}
+                    <div
+                      style={{
+                        backgroundColor: data.forumCategory === 'Lifestyle' ? PromedikForumCategoryLifestyle : data.forumCategory === 'Dermatologi' ? PromedikForumCategoryDermatologi : PromedikForumCategoryFertilitas,
+                        // width: '100px',
+                        // height: '50px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '14px',
+                        padding: '5px 10px',
+                        borderRadius: '10px',
+                        color: PromedikWhite
+                      }}
+                    >
+                      {data.forumCategory}
+                    </div>
                   </div>
-                </div>
+                }
               </div>
             </div >
           )

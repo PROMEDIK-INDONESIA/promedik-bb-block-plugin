@@ -44,6 +44,8 @@ registerBlockType('promedik/promedik-discussion', {
 		// component: { type: "string" },
 		// type: { type: "string" },
 		data: { type: "array" },
+		isColumn: { type: "boolean" },
+		isForumCategoryHide: { type: "boolean" },
 		isFertilitasHidden: { type: "boolean" },
 		isLifestyleHidden: { type: "boolean" },
 		isDermatologiHidden: { type: "boolean" },
