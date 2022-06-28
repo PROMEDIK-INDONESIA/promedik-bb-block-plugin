@@ -265,7 +265,7 @@ export const PromedikDiscussionEdit = ({ props }) => {
       }}
     >
       <div style={{ padding: '15px', borderBottom: `1px ${PromedikDarkGrey} solid` }}>
-        All Discussions
+        All Discussions HAHAHAHHAHAHAH
         <div>{renderForumCategoryContent}</div>
       </div>
       {BlockSetting()}
