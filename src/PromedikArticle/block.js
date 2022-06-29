@@ -45,7 +45,14 @@ registerBlockType('promedik/promedik-article', {
 		component: { type: "string" },
 		type: { type: "string" },
 		data: { type: "array" },
-		isHideAvatar: { type: "boolean" }
+		isHideAvatar: { type: "boolean" },
+
+		tags: { type: "array" },
+		data: { type: "array" },
+		categories: { type: "array" },
+		authors: { type: "array" },
+		isNarrow: { type: "boolean" },
+		articleShowNumber: { type: "integer" }
 	},
 
 	edit: function (props) {
