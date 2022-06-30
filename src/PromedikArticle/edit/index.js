@@ -12,7 +12,7 @@ import { useKeenSlider } from "keen-slider/react"
 // import "keen-slider/keen-slider.min.css"
 
 export const PromedikArticleEdit = ({ props }) => {
-    // console.log(props, '<<< props edit');
+    console.log(props, '<<< props edit');
 
     useEffect(() => {
 
@@ -75,8 +75,6 @@ export const PromedikArticleEdit = ({ props }) => {
         props.setAttributes({ tags: FilterLists })
     }
 
-
-
     const ArrayOfTagCategoryAuthor = (articleData) => {
         let arrayOfCategories = []
         let arrayOfTags = []
@@ -125,6 +123,20 @@ export const PromedikArticleEdit = ({ props }) => {
         })
         setMixCategories(cleanCategories)
         return cleanCategories
+    }
+
+    const ArrayOfAuthor = (authors) => {
+        let arrayOfAuthors = []
+
+        arrayOfAuthors.push(authors)
+
+        let noDuplicateAuthors = [...new Set(arrayOfAuthors)];
+
+        const cleanAuthors = noDuplicateAuthors.map((author) => {
+            return { name: author, value: true }
+        })
+        setMixAuthors(cleanAuthors)
+        return cleanAuthors
     }
 
     // const ArrayOfTag = (articleData) => {
@@ -196,7 +208,7 @@ export const PromedikArticleEdit = ({ props }) => {
                                 }
                             </div>
                         </PanelBody>
-                        <PanelBody title="Author">
+                        <PanelBody title="Authors">
                             <div
                                 style={{
                                     gridTemplateColumns: 'repeat(auto-fill, minmax(max(50%), 1fr))',
@@ -288,33 +300,17 @@ export const PromedikArticleEdit = ({ props }) => {
             let textOnlyCategory = []
             let textOnlyTags = []
             Promise.all(ArticleTags).then(value => {
-                // if (value.length > 0) {
-                //     ArticleTagsTemp = ArticleTagsTemp.concat(value)
-                // } else {
-                //     ArticleTagsTemp = ['string']
-                // }
                 value.map((data) => {
                     textOnlyTags.push(data.name)
                     ArticleTagsTemp.push(data)
                 })
-
             })
             Promise.all(ArticleCategory).then(value => {
-                // if (value.length > 0) {
-                //     ArticleCategoryTemp = ArticleCategoryTemp.concat(value)
-                // } else {
-                //     ArticleCategoryTemp = ['string']
-                // }
-                // console.log(value, '<<< category promise');
                 value.map((data) => {
                     textOnlyCategory.push(data.name)
                     ArticleCategoryTemp.push(data)
                 })
             })
-
-            // ArticleCategoryTemp && ArticleCategoryTemp.map((category) => {
-            //     textOnlyCategory.push(category.name)
-            // })
 
             const ArticleAuthor = await axios.get(GET_AUTHOR_DETAIL_BY_ID(data.author))
             const ArticleCover = await axios.get(GET_ARTICLE_COVER_BY_ID(data.featured_media))
@@ -335,11 +331,14 @@ export const PromedikArticleEdit = ({ props }) => {
         Promise.all(promises).then(value => {
             setMasterArticles(value)
             let categories = []
+            let authors = []
             value.map((data) => {
                 categories.push(ArrayOfCategory(data.categories))
+                authors.push(ArrayOfAuthor(data.author))
             })
             // console.log(categories, '<< categories');
             props.setAttributes({ categories: categories })
+            // props.setAttributes({ authors: authors })
             props.setAttributes({ data: value })
             ArrayOfTagCategoryAuthor(value)
             console.log(value, '<<< value')
