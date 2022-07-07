@@ -39,6 +39,7 @@ registerBlockType('promedik/promedik-article', {
 	],
 	attributes: {
 		tags: { type: "array" },
+		articleGridPixel: { type: "string" },
 		tagsWithDetail: { type: "array" },
 		data: { type: "array" },
 		masterData: { type: "array" },

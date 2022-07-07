@@ -8,9 +8,9 @@ import {
 } from '@wordpress/block-editor';
 import { Panel, PanelBody, CheckboxControl, SelectControl, Spinner, FormTokenField, RangeControl } from '@wordpress/components';
 import moment from 'moment'
-import { useKeenSlider } from "keen-slider/react"
+// import { useKeenSlider } from "keen-slider/react"
 import { dispatch } from '@wordpress/data';
-import Slider from "react-slick";
+// import Slider from "react-slick";
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
 
@@ -68,14 +68,14 @@ export const PromedikArticleEdit = ({ props }) => {
   }, [isLoadingNewArticleData, setIsLoadingNewArticleData])
 
 
-  const [sliderRef] = useKeenSlider({
-    loop: false,
-    mode: "free",
-    slides: {
-      perView: sliderNumber,
-      spacing: 15,
-    },
-  })
+  // const [sliderRef] = useKeenSlider({
+  //   loop: false,
+  //   mode: "free",
+  //   slides: {
+  //     perView: sliderNumber,
+  //     spacing: 15,
+  //   },
+  // })
 
   var settings = {
     dots: false,
@@ -457,8 +457,20 @@ export const PromedikArticleEdit = ({ props }) => {
             <PanelBody title="Number of Articles Displayed in Single Row">
               <RangeControl
                 label="Article"
+                withInputField={false}
+                marks={false}
                 value={sliderNumber === 0 ? 3 : sliderNumber}
                 onChange={(value) => {
+                  // if (value === 2) {
+                  //   setSliderNumber(4)
+                  //   props.setAttributes({ articleShowNumber: 4 })
+                  // } else if (value === 4) {
+                  //   setSliderNumber(2)
+                  //   props.setAttributes({ articleShowNumber: 2 })
+                  // } else {
+                  //   setSliderNumber(value)
+                  //   props.setAttributes({ articleShowNumber: value })
+                  // }
                   setSliderNumber(value)
                   props.setAttributes({ articleShowNumber: value })
                 }}
@@ -664,6 +676,10 @@ export const PromedikArticleEdit = ({ props }) => {
         props.setAttributes({ tags: defaultTag })
       }
 
+      if (props.attributes.articleGridPixel === undefined) {
+        props.setAttributes({ articleGridPixel: '300px' })
+      }
+
       props.setAttributes({ masterData: value })
       props.setAttributes({ tagsWithDetail: uniqueArrayOfTag })
       props.setAttributes({ articleShowNumber: 3 })
@@ -791,38 +807,98 @@ export const PromedikArticleEdit = ({ props }) => {
     })
   }
 
-  return (
-    <div
-      style={{
-        // display: 'flex',
-        // flex: 1,
-        // flexWrap: 'wrap',
-        // justifyContent: 'center',
-        // alignItems: 'center'
-      }}
-    >
-      {BlockSetting()}
-      <Slider {...settings}>
-        {forum ? RenderPlaceholder() : <p>loading...</p>}
-      </Slider>
-      {/* <div ref={sliderRef} className="keen-slider" style={{ maxWidth: '100%' }}>
-        {forum ? RenderPlaceholder() : <p>loading...</p>}
+  const SingleCard = () => {
+    return (
+      <div
+        style={{
+          border: `1px ${PromedikGrey} solid`,
+          borderRadius: "10px",
+          overflow: "hidden"
+        }}
+      >
         <div
-          className='keen-slider__slide'
           style={{
-            overflow: 'hidden',
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
+            height: "200px"
           }}
-        />
-      </div> */}
-      <div style={{ display: 'flex', flex: 1 }}>
-        {/* {forum ? RenderCardForum(forum) : <p>loading...</p>} */}
-        {/* {forum ? RenderPlaceholder() : <p>loading...</p>} */}
+        >
+          <img
+            // src={
+            //   idx % 2
+            //     ? "https://i.kym-cdn.com/entries/icons/mobile/000/026/638/cat.jpg"
+            //     : idx % 3
+            //       ? "https://i.pinimg.com/originals/c0/4f/8b/c04f8b31f30a6d031db192654b77e208.jpg"
+            //       : "https://c.tenor.com/gz3PEMbILiYAAAAC/bongo-cat.gif"
+            // }
+            style={{
+              width: "100%",
+              height: "100%",
+              backgroundColor: "grey",
+              objectFit: "cover"
+            }}
+          />
+        </div>
+        <div
+          style={{
+            padding: "20px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start"
+          }}
+        >
+          <div
+            style={{ fontSize: "24px", textAlign: "left" }}
+            className="title"
+          >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit ante et huehe
+          </div>
+          <div style={{ fontSize: '12px', color: PromedikDarkGrey }}>
+            <div>Posted on 17 June, 2021 By Admin</div>
+            <div>Posted in Article Category 0 Comments</div>
+          </div>
+          <div style={{ textAlign: "left", fontSize: '16px' }} className="title">
+            Integer sapien nisl, commodo scelerisque odio in. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sapien nisl, commodo scelerisque odio in. Lorem ipsum dolor sit amet.
+          </div>
+        </div>
       </div>
-      <div>
-        {/* {discussion ? RenderCardDiscussion(discussion) : <p>loading...</p>} */}
+    );
+  }
+
+  const RenderPlaceholderArticleCard = () => {
+    return Array(5)
+      .fill(1)
+      .map((data, idx) => {
+        return (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            {SingleCard()}
+          </div>
+        )
+      })
+  }
+
+  const HandleTotalDisplayCard = (number) => {
+    if (number === 2) {
+      props.setAttributes({ articleGridPixel: '400px' })
+      return '400px'
+    } else if (number === 4) {
+      props.setAttributes({ articleGridPixel: '250px' })
+      return '250px'
+    } else {
+      props.setAttributes({ articleGridPixel: '300px' })
+      return '300px'
+    }
+  }
+
+  return (
+    <div>
+      {BlockSetting()}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: `repeat(auto-fit, minmax(${HandleTotalDisplayCard(sliderNumber)}, 1fr))`,
+          gridGap: "1rem"
+        }}
+      >
+        {forum ? RenderPlaceholderArticleCard() : <p>loading...</p>}
       </div>
     </div>
   )
