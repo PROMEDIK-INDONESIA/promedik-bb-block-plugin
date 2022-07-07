@@ -40,3 +40,12 @@ export const DateConverter = (date) => {
   const LastActiveDiscussion = moment(ReformatDate).fromNow()
   return LastActiveDiscussion
 }
+
+export const DateConverterClassic = (date) => {
+  const ReformatDate = moment(date).format('DD MMMM, YYYY')
+  return ReformatDate
+}
+
+export const LetterCapitalizer = (text) => {
+  return text[0].toUpperCase() + text.slice(1).toLowerCase()
+}

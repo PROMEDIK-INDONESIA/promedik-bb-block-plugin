@@ -37,12 +37,6 @@ registerBlockType('promedik/promedik-discussion', {
 		__('Discussion'),
 	],
 	attributes: {
-		// avatar: { type: "string" },
-		// title: { type: "string" },
-		// actFeed: { type: "string" },
-		// link: { type: "string" },
-		// component: { type: "string" },
-		// type: { type: "string" },
 		data: { type: "array" },
 		isColumn: { type: "boolean" },
 		isForumCategoryHide: { type: "boolean" },
@@ -53,7 +47,6 @@ registerBlockType('promedik/promedik-discussion', {
 	},
 
 	edit: function (props) {
-		// console.log(props, '<<< props edit');
 		return (
 			<div className={props.className}>
 				<PromedikDiscussionEdit props={props} />
@@ -62,7 +55,6 @@ registerBlockType('promedik/promedik-discussion', {
 	},
 
 	save: function (props) {
-		// console.log(props, '<<< props save');
 		return (
 			<div className={props.className}>
 				<PromedikDiscussionSave props={props} />

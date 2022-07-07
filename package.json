@@ -10,12 +10,15 @@
   "dependencies": {
     "@wordpress/block-editor": "^9.3.0",
     "@wordpress/components": "^19.13.0",
+    "@wordpress/data": "^6.12.0",
     "@wordpress/viewport": "^4.9.0",
     "axios": "^0.27.2",
     "cgb-scripts": "1.23.1",
     "keen-slider": "^6.7.0",
     "moment": "^2.29.3",
     "node-html-parser": "^5.3.3",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "react-slick": "^0.29.0",
+    "slick-carousel": "^1.8.1"
   }
 }

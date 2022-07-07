@@ -5,7 +5,7 @@
  * Description: Gutenberg plugin created via create-guten-block (Customized by Promedik Team).
  * Author: PT Profesional Medik Indonesia
  * Author URI: https://promedik.com/
- * Version: 1.0.0
+ * Version: 1.0.2
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *

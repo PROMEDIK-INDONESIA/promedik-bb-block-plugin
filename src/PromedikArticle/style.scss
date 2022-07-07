@@ -4,7 +4,7 @@
  * CSS for both Frontend+Backend.
  */
 
-.wp-block-cgb-block-promedik-plugin  {
+.wp-block-cgb-block-promedik-plugin {
   background: $red;
   border: 0.2rem solid $black;
   color: $black;
@@ -12,3 +12,33 @@
   max-width: 740px;
   padding: 2rem;
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .container-article-card-grid,
+  .container-article-card-grid-many-columns {
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+  .container-article-card-grid,
+  .container-article-card-grid-many-columns {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+  .container-article-card-grid,
+  .container-article-card-grid-many-columns {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1024px) {
+  .container-article-card-grid-many-columns {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+

@@ -38,21 +38,16 @@ registerBlockType('promedik/promedik-article', {
 		__('Article'),
 	],
 	attributes: {
-		avatar: { type: "string" },
-		title: { type: "string" },
-		actFeed: { type: "string" },
-		link: { type: "string" },
-		component: { type: "string" },
-		type: { type: "string" },
-		data: { type: "array" },
-		isHideAvatar: { type: "boolean" },
-
 		tags: { type: "array" },
+		tagsWithDetail: { type: "array" },
 		data: { type: "array" },
+		masterData: { type: "array" },
 		categories: { type: "array" },
 		authors: { type: "array" },
 		isNarrow: { type: "boolean" },
-		articleShowNumber: { type: "integer" }
+		articleShowNumber: { type: "integer" },
+		filteredCategories: { type: "array" },
+		filteredAuthors: { type: "array" }
 	},
 
 	edit: function (props) {
